@@ -4,8 +4,10 @@ import { DEFAULT_SETTINGS } from '../../domain/defaults';
 import { buildSampleData } from '../../domain/sample';
 import type { SchedulerSettings, ThemeSetting } from '../../domain/types';
 import { realToday, setTestDate, testDate, testModeActive, testModeAvailable, today } from '../../data/clock';
+import { badgeEnabled, badgePermission, badgeSupport, disableBadge, enableBadge } from '../../data/badge';
+import { isIOS, isStandalone } from '../../data/platform';
 import { checkForUpdate } from '../../data/pwa';
-import { data, eraseTasksAndSessions, newId, replaceAllData, updateScheduler, updateSettings } from '../../data/store';
+import { data, dueCount, eraseTasksAndSessions, newId, replaceAllData, updateScheduler, updateSettings } from '../../data/store';
 import { exportBackup, importBackupFile } from '../backupActions';
 import { Segmented, Stepper, Switch } from '../components/controls';
 import { ChevronRight } from '../components/Icons';
@@ -166,6 +168,9 @@ export function SettingsScreen() {
         </div>
       </div>
 
+      {/* ---------- App icon badge ---------- */}
+      <BadgeSection />
+
       {/* ---------- Test mode (desktop only) ---------- */}
       {testModeAvailable && <TestModeSection />}
 
@@ -216,6 +221,68 @@ export function SettingsScreen() {
         Install on iPhone: open this page in Safari → Share → Add to Home Screen, then always launch from the icon. The installed app works offline.
       </p>
     </div>
+  );
+}
+
+const okButton = [{ label: 'OK', value: 'ok', style: 'cancel' as const }];
+
+function BadgeSection() {
+  const enabled = badgeEnabled.value;
+  const permission = badgePermission.value;
+  const support = badgeSupport();
+  const due = dueCount.value;
+  const blocked = enabled && permission !== 'granted' && permission !== 'not-required';
+
+  const onToggle = async (on: boolean) => {
+    if (!on) {
+      disableBadge();
+      return;
+    }
+    // enableBadge() must run synchronously inside this tap so iOS shows the permission prompt.
+    const result = await enableBadge();
+    if (result === 'enabled') {
+      showToast(due > 0 ? `Badge on · ${plural(due, 'task')} due` : 'Badge on · nothing due right now');
+    } else if (result === 'denied') {
+      await ask(
+        'Badge needs notifications',
+        'iOS only shows app badges when notifications are allowed. Turn on notifications in iOS Settings → Notifications → Practice, then try again. The app never sends notifications.',
+        okButton,
+      );
+    } else if (result === 'needs-install') {
+      await ask('Install the app first', 'App icon badges only work in the Home Screen app. In Safari, tap Share → Add to Home Screen, open Practice from the icon, then turn this on.', okButton);
+    } else {
+      showToast("This browser doesn't support app icon badges");
+    }
+  };
+
+  let note: string;
+  if (support === 'needs-install') {
+    note = 'Available in the installed app: in Safari tap Share → Add to Home Screen, open Practice from the icon, then turn this on.';
+  } else if (support === 'unsupported') {
+    note = "This browser doesn't support app icon badges.";
+  } else if (blocked) {
+    note = 'Notifications are off for Practice, so iOS hides the badge. Turn them on in iOS Settings → Notifications → Practice.';
+  } else {
+    note =
+      'Shows how many tasks are due or overdue today. The badge updates whenever the app is open; it can’t change while the app is closed, so after midnight it catches up the next time you open the app.';
+    if (permission !== 'not-required') note += ' iOS asks for notification permission because badges are part of notifications — the app never sends any.';
+    else if (!isIOS() && !isStandalone()) note += ' On a computer it appears on the installed app’s icon (Chrome or Edge: Install app).';
+  }
+
+  return (
+    <>
+      <h2 class="section-h">App icon</h2>
+      <div class="group">
+        <div class="field">
+          <span class="label">
+            Badge with today's count
+            <small>{blocked ? 'Notifications are off' : `${plural(due, 'task')} due or overdue now`}</small>
+          </span>
+          <Switch label="App icon badge" checked={enabled} onChange={(v) => void onToggle(v)} />
+        </div>
+      </div>
+      <p class="section-f">{note}</p>
+    </>
   );
 }
 

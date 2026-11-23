@@ -1,0 +1,3 @@
+# LF everywhere: builds are byte-identical on every OS and patches apply with plain `git am`.
+* text=auto eol=lf
+*.png binary

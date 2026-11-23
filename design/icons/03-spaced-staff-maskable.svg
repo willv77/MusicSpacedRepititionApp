@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Maskable variant of 03-spaced-staff.svg: artwork scaled to 75% so it stays inside
+       Android's circular safe zone (radius = 40% of the icon). -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="80%">
+      <stop offset="0" stop-color="#14203d"/>
+      <stop offset="1" stop-color="#060912"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <g transform="translate(256 256) scale(0.75) translate(-256 -256)">
+    <g transform="translate(-30 -26) scale(1.12)">
+      <g stroke="#93c5fd" stroke-opacity=".24" stroke-width="4">
+        <path d="M46 246H462M46 276H462M46 306H462M46 336H462M46 366H462"/>
+      </g>
+      <g filter="url(#glow)">
+        <g fill="#f43f5e"><ellipse cx="88" cy="351" rx="23" ry="17" transform="rotate(-20 88 351)"/><rect x="105" y="246" width="9" height="105" rx="3"/></g>
+        <g fill="#fb923c"><ellipse cx="138" cy="321" rx="23" ry="17" transform="rotate(-20 138 321)"/><rect x="155" y="216" width="9" height="105" rx="3"/></g>
+        <g fill="#facc15"><ellipse cx="206" cy="291" rx="23" ry="17" transform="rotate(-20 206 291)"/><rect x="223" y="186" width="9" height="105" rx="3"/></g>
+        <g fill="#a3e635"><ellipse cx="298" cy="276" rx="23" ry="17" transform="rotate(-20 298 276)"/><rect x="315" y="171" width="9" height="105" rx="3"/></g>
+        <g fill="#22c55e"><ellipse cx="420" cy="246" rx="26" ry="19" transform="rotate(-20 420 246)"/><rect x="439" y="136" width="10" height="110" rx="3"/></g>
+      </g>
+    </g>
+  </g>
+</svg>

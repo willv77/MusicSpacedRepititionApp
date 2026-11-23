@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice — App Icon Alternatives</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #0d0e12; color: #e7e7ec; -webkit-font-smoothing: antialiased; }
+  header { max-width: 1320px; margin: 0 auto; padding: 28px 28px 4px; }
+  h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: -.02em; }
+  header p { margin: 0; color: #9a9caa; max-width: 900px; line-height: 1.5; }
+  .grid { max-width: 1320px; margin: 0 auto; padding: 22px 28px 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .card { background: #16171d; border: 1px solid #262833; border-radius: 18px; padding: 18px; display: flex; gap: 16px; align-items: flex-start; }
+  .card.selected { border-color: #4ade80; box-shadow: 0 0 0 1px #4ade80, 0 0 24px rgba(74,222,128,.15); }
+  .card.selected h2::after { content: "Selected"; margin-left: 8px; font-size: 11px; font-weight: 700; color: #052e16; background: #4ade80; padding: 2px 7px; border-radius: 6px; vertical-align: 2px; }
+  .big { width: 132px; height: 132px; border-radius: 22.5%; flex: 0 0 132px; box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.06); }
+  .info h2 { margin: 0 0 4px; font-size: 16px; }
+  .info h2 span { color: #6b6e7d; font-weight: 600; margin-right: 6px; }
+  .info p { margin: 0 0 10px; font-size: 13px; line-height: 1.45; color: #a7a9b6; }
+  .sizes { display: flex; align-items: flex-end; gap: 10px; }
+  .sizes img { border-radius: 22.5%; }
+  .swatches { display: flex; gap: 5px; margin-top: 10px; }
+  .swatches i { width: 16px; height: 16px; border-radius: 5px; border: 1px solid rgba(255,255,255,.12); }
+  h3 { max-width: 1320px; margin: 26px auto 0; padding: 0 28px; font-size: 18px; }
+  .phones { display: flex; gap: 36px; flex-wrap: wrap; justify-content: center; padding: 18px 28px 60px; }
+  .phone { width: 390px; border-radius: 48px; padding: 56px 26px 40px; border: 10px solid #000; box-shadow: 0 0 0 2px #2a2b33, 0 30px 60px rgba(0,0,0,.5); }
+  .phone.dark { background: radial-gradient(120% 80% at 20% 10%, #3b2a68 0%, #141325 45%, #07070c 100%); }
+  .phone.light { background: radial-gradient(120% 80% at 80% 0%, #ffd7a8 0%, #f6a6c1 40%, #7aa7ff 100%); }
+  .phone .apps { display: grid; grid-template-columns: repeat(4, 1fr); row-gap: 22px; justify-items: center; }
+  .app { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 76px; }
+  .app img { width: 62px; height: 62px; border-radius: 22.5%; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+  .app span { font-size: 11.5px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.6); white-space: nowrap; }
+  .caption { text-align: center; color: #8d8f9c; font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>App icon alternatives — dark background, color foreground</h1>
+  <p>Twelve options for the Practice app icon. <b style="color:#4ade80">Selected: 03 Spaced Staff</b> (PNG icons in <code>src/public/icons/</code> are rendered from it).
+     Each is a 512×512 SVG in this folder. iOS rounds the corners itself, so the files are full-bleed squares; previews here apply the iOS corner mask.
+     Small sizes show how the icon reads on the Home Screen (60 pt) and in Spotlight/Settings (40 pt / 29 pt).</p>
+</header>
+
+<section class="grid" id="grid"></section>
+
+<h3>On the Home Screen</h3>
+<div class="phones">
+  <div><div class="phone dark"><div class="apps" id="home-dark"></div></div><div class="caption">Dark wallpaper</div></div>
+  <div><div class="phone light"><div class="apps" id="home-light"></div></div><div class="caption">Light wallpaper</div></div>
+</div>
+
+<script>
+  const icons = [
+    ['01-note-loop', 'Note Loop', 'An eighth note inside a "repeat" arrow — practice, then come back. Neon cyan → violet.', ['#22d3ee', '#a855f7', '#06070b']],
+    ['02-repeat-sign', 'Repeat Sign', 'The musical end-repeat barline (:‖) on a faint staff. Literal notation for "practice again". Gold.', ['#fde68a', '#fbbf24', '#d97706', '#090807']],
+    ['03-spaced-staff', 'Spaced Staff', 'Notes climbing a staff with gaps that grow wider — spaced repetition drawn as music. Red → green as mastery grows.', ['#f43f5e', '#fb923c', '#facc15', '#a3e635', '#22c55e']],
+    ['04-metronome', 'Metronome', 'Classic metronome with swinging pendulum. Warm amber on near-black; instantly reads as "practice".', ['#fcd34d', '#f97316', '#070503']],
+    ['05-five-in-a-row', 'Five in a Row', 'A big note over five glowing pips — the app\'s own "5 consecutive sessions at 8+" mastery marker.', ['#2dd4bf', '#bef264', '#a3e635', '#040a08']],
+    ['06-tempo-chart', 'Tempo Chart', 'The in-app history chart: rising tempo line over rating bars, green once they clear the 8+ line.', ['#38bdf8', '#22c55e', '#334155', '#050810']],
+    ['07-practice-rings', 'Practice Rings', 'Activity-style progress rings closing around a note. Pink, lime and cyan on pure black.', ['#ff2d55', '#a3e635', '#38e1ff', '#000000']],
+    ['08-glow-key', 'Glow Key', 'Piano keys in the dark with one key lit — "today\'s task". Magenta glow.', ['#f5d0fe', '#c026d3', '#1a1824', '#050407']],
+    ['09-eight-plus', '8+', 'The rule itself: a bold "8+" in a sunset gradient over five green pips. Built from shapes, no font needed.', ['#fb7185', '#fb923c', '#facc15', '#4ade80']],
+    ['10-practice-calendar', 'Practice Calendar', 'A calendar page holding a note — "what to practice today". Violet → pink.', ['#a78bfa', '#f472b6', '#f5d0fe', '#06040e']],
+    ['11-wave-check', 'Wave → Check', 'A sound wave that resolves into a check mark — "played it, nailed it". Emerald → lime.', ['#34d399', '#d9f99d', '#020805']],
+    ['12-rising-beam', 'Rising Beam', 'Two beamed eighth notes whose beam rises left to right like a progress line. Lime → cyan.', ['#a3e635', '#22d3ee', '#04080a']],
+  ];
+
+  const grid = document.getElementById('grid');
+  icons.forEach(([file, name, desc, colors], i) => {
+    const src = `${file}.svg`;
+    grid.insertAdjacentHTML('beforeend', `
+      <article class="card${file === '03-spaced-staff' ? ' selected' : ''}">
+        <img class="big" src="${src}" alt="${name} icon">
+        <div class="info">
+          <h2><span>${String(i + 1).padStart(2, '0')}</span>${name}</h2>
+          <p>${desc}</p>
+          <div class="sizes">
+            <img src="${src}" width="60" height="60" alt="">
+            <img src="${src}" width="40" height="40" alt="">
+            <img src="${src}" width="29" height="29" alt="">
+          </div>
+          <div class="swatches">${colors.map((c) => `<i style="background:${c}" title="${c}"></i>`).join('')}</div>
+        </div>
+      </article>`);
+  });
+
+  const shortLabels = ['Loop', 'Repeat', 'Staff', 'Metronome', 'Five', 'Chart', 'Rings', 'Key', '8+', 'Calendar', 'Check', 'Beam'];
+  for (const id of ['home-dark', 'home-light']) {
+    const home = document.getElementById(id);
+    icons.forEach(([file], i) => {
+      home.insertAdjacentHTML('beforeend', `<div class="app"><img src="${file}.svg" alt=""><span>${i + 1} · ${shortLabels[i]}</span></div>`);
+    });
+  }
+</script>
+</body>
+</html>

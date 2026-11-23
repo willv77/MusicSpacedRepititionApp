@@ -37,6 +37,10 @@ GitHub Pages needs a **public** repo on the free plan. The code is public; your 
 
 **Backups:** data is stored only on the device, and deleting the Home Screen app deletes its data. Use **Settings → Export backup** (share sheet → Save to Files / iCloud Drive) regularly. **Import backup** can merge or replace.
 
+**App icon badge:** turn on **Settings → App icon → Badge with today's count** in the installed app to show the number of tasks due or overdue on the icon. iOS asks for notification permission because badges are part of notifications; the app never sends any. The badge only updates while the app is open, so after midnight it catches up the next time you open the app.
+
+**App icon:** *03 Spaced Staff* from [design/icons/index.html](design/icons/index.html). The PNGs in `src/public/icons/` are rendered from `design/icons/03-spaced-staff.svg` and `03-spaced-staff-maskable.svg`. iOS keeps the icon it saw when you added the app, so to pick up a new icon, export a backup, remove the app from the Home Screen, add it again, and import the backup.
+
 ## Test mode (desktop only)
 
 On a desktop browser, **Settings → Test mode → Simulate a date** lets you pick any "today" with a calendar picker, step ±1 day or week, and **Load sample data** (8 demo tasks with realistic histories). An orange banner shows the simulated date, with −1d / +1d / Exit.

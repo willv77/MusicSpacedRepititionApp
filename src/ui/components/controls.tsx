@@ -290,7 +290,18 @@ export function TabBar({ active }: { active: TabName }) {
 export function Switch({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <label class="switch">
-      <input type="checkbox" role="switch" checked={checked} aria-label={label} onChange={(e) => onChange(e.currentTarget.checked)} />
+      <input
+        type="checkbox"
+        role="switch"
+        checked={checked}
+        aria-label={label}
+        onChange={(e) => {
+          const next = e.currentTarget.checked;
+          // Stay controlled: only a state change (re-render) may flip the switch, e.g. not when a permission is refused.
+          e.currentTarget.checked = checked;
+          onChange(next);
+        }}
+      />
       <span />
     </label>
   );

@@ -1,6 +1,6 @@
 # Practice App: Spaced-Repetition Music Practice
 
-**Design document · v0.2 · 2026-11-23 · Option A implemented**
+**Design document · v0.2 · 2026-11-23 · Option A implemented (app v0.1.1)**
 
 A small offline web app that tells you **what to practice today** and remembers **how it went** (tempo, difficulty, when to practice next).
 It is hosted as a static site on GitHub Pages from the `docs/` folder and installed on an iPhone with Safari's **Add to Home Screen**.
@@ -68,6 +68,7 @@ It is hosted as a static site on GitHub Pages from the `docs/` folder and instal
 | F11 | Built-in metronome and practice timer, with the metronome tempo logged automatically ("Practice Mode", Option B). | v0.3 |
 | F12 | Session notes ✅; tags, target tempo, snooze/skip, calendar heatmap. | later |
 | F13 | **Test mode (desktop only):** pick a simulated "today" with a calendar picker to see how the schedule plays out on future days. | ✅ v0.1 |
+| F14 | **App icon badge** with the number of tasks due or overdue today (opt-in; needs notification permission on iPhone). | ✅ v0.1.1 |
 
 ### Non-functional
 
@@ -292,6 +293,7 @@ WkvPracticeApp/
 │  │  ├─ backup.ts            # serialize / parse / merge / share-or-download
 │  │  ├─ clock.ts             # "today" (real or simulated in Test mode)
 │  │  ├─ platform.ts          # isDesktop(), isIOS(), isStandalone()
+│  │  ├─ badge.ts             # app icon badge (Badging API + iOS notification permission)
 │  │  └─ pwa.ts               # service-worker registration + update prompt
 │  ├─ ui/
 │  │  ├─ screens/             # Today, Tasks, TaskDetail, History, Settings
@@ -303,6 +305,7 @@ WkvPracticeApp/
 │  └─ public/                 # copied verbatim to docs/
 │     ├─ .nojekyll, favicon.svg
 │     └─ icons/               # apple-touch-icon-180.png, icon-192.png, icon-512.png, maskable-512.png
+│                             #   (rendered from design/icons/03-spaced-staff*.svg)
 ├─ tests/                     # Vitest: dates, scheduler, queue (+ sample data), backup/migrations, store, platform
 ├─ docs/                      # ⚠ BUILD OUTPUT served by GitHub Pages: never edit by hand
 ├─ package.json
@@ -363,7 +366,8 @@ export default defineConfig({
 | **Dark mode** | CSS variables switched by `prefers-color-scheme`, which can be overridden in Settings. |
 | **Metronome audio** (v0.3) | Web Audio is **muted by the silent switch** by default. Set `navigator.audioSession.type = 'playback'` (Safari 16.4+/17) **inside the tap handler** that starts the metronome, then `audioContext.resume()`. Schedule clicks with a look-ahead timer (`currentTime`-based), not `setInterval`. |
 | **Keep screen on** (v0.3) | `navigator.wakeLock.request('screen')` during Practice Mode. It works in Home Screen apps from **iOS 18.4**; on older versions it silently does nothing, so feature-detect and ignore errors. |
-| **App icon badge** (optional) | `navigator.setAppBadge(dueCount)` works in Home Screen apps (iOS 16.4+), but **only after notification permission is granted**, and it only updates while the app is open. Make it opt-in from Settings. |
+| **App icon badge** ✅ | Settings → App icon → *Badge with today's count* calls `navigator.setAppBadge(dueCount)` (overdue + due, not yet done) and `clearAppBadge()` at 0 ([`src/data/badge.ts`](../src/data/badge.ts)). The Badging API exists only in Home Screen apps (iOS 16.4+), and **iOS only shows the badge once notification permission is granted**, so turning the toggle on calls `Notification.requestPermission()` synchronously inside the tap. The app never sends notifications. The opt-in is stored on the device (`wkv-practice:app-badge`), not in backups. **Limitation:** a static site has no background execution on iOS (no push, no periodic sync), so the badge only updates while the app is open. After midnight it shows yesterday's number until the app is opened. |
+| **App icon** ✅ | *03 Spaced Staff* from [`icons/index.html`](icons/index.html): notes climbing a staff with widening gaps, red → green. The full-bleed square is used for iOS (which rounds the corners itself); a 75%-scaled variant serves as the Android maskable icon. iOS caches the icon when you add it to the Home Screen, so an existing install keeps the old icon until it is removed and re-added (export a backup first, because removing it deletes the data). |
 | **Reminders** | True push reminders need a server (Web Push), which a static site doesn't have. Alternative: a recurring iOS Reminder or Shortcut automation that opens the app URL daily. |
 | **Secure context** | Service workers and `crypto.randomUUID()` need HTTPS. GitHub Pages and `localhost` qualify, but opening `http://192.168.x.x:5173` on the phone does **not**. Test on the device with the deployed URL, or run `vite --host` with `@vitejs/plugin-basic-ssl`. |
 | **Haptics** | `navigator.vibrate` isn't supported on iOS, so don't design around it. |
@@ -466,7 +470,8 @@ If you want something on your phone this week, **D** is the quickest MVP: the do
 | Version | Scope |
 |---|---|
 | **v0.1** ✅ | Option A: Today queue, Tasks (search, Active/Due/Archived), Task detail with chart, History, Log Session with history and live recommendation, suggested tempo, notes, edit/delete sessions, archive, export/import, scheduler settings, backup reminder, light/dark, PWA install and offline, desktop Test mode |
-| **v0.2** | Snooze/skip ("not today" without logging), opt-in app icon badge, swipe-to-dismiss sheets |
+| **v0.1.1** ✅ | New app icon (*03 Spaced Staff*), opt-in app icon badge with today's due count |
+| **v0.2** | Snooze/skip ("not today" without logging), swipe-to-dismiss sheets |
 | **v0.3** | Practice Mode (B): metronome with `audioSession` fix, tap tempo, timer, wake lock, interleaved queue |
 | **later** | Tags/collections, target tempo per task, calendar heatmap, interval fuzzing/load balancing, IndexedDB if data grows |
 

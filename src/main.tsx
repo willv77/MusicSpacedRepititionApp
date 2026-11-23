@@ -1,22 +1,27 @@
 import { render } from 'preact';
 import './ui/styles.css';
 import { App } from './app';
+import { BADGE_KEY, initBadge, refreshBadgeState } from './data/badge';
 import { refreshRealToday, reloadTestDate, TEST_DATE_KEY } from './data/clock';
 import { initPWA } from './data/pwa';
 import { DATA_KEY, LocalStorageRepository } from './data/repository';
-import { initStore, reloadFromRepository } from './data/store';
+import { dueCount, initStore, reloadFromRepository } from './data/store';
 import { initRouter } from './ui/router';
 
 initStore(new LocalStorageRepository(localStorage));
 initRouter();
 initPWA();
+initBadge(dueCount);
 
 // Ask WebKit/Chromium not to evict our storage (granted heuristically, e.g. for Home Screen apps).
 void navigator.storage?.persist?.().catch(() => undefined);
 
 // Standalone apps can stay open across midnight — refresh "today" whenever the app is resumed.
+// Also re-check notification permission, which the user may have changed in iOS Settings.
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) refreshRealToday();
+  if (document.hidden) return;
+  refreshRealToday();
+  refreshBadgeState();
 });
 window.addEventListener('focus', refreshRealToday);
 setInterval(refreshRealToday, 60_000);
@@ -25,6 +30,7 @@ setInterval(refreshRealToday, 60_000);
 window.addEventListener('storage', (e) => {
   if (e.key === DATA_KEY) reloadFromRepository();
   if (e.key === TEST_DATE_KEY) reloadTestDate();
+  if (e.key === BADGE_KEY) refreshBadgeState();
 });
 
 // Lift bottom sheets above the iOS on-screen keyboard (fixed elements otherwise stay under it).

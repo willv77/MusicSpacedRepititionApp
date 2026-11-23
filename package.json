@@ -1,7 +1,7 @@
 {
   "name": "wkv-practice-app",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Spaced-repetition music practice app (iPhone Home Screen web app, hosted on GitHub Pages from docs/).",
   "type": "module",
   "scripts": {

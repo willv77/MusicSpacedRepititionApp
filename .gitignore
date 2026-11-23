@@ -3,4 +3,5 @@ node_modules/
 .DS_Store
 coverage/
 .vite/
+*.patch
 # NOTE: docs/ is the GitHub Pages build output and MUST be committed.
