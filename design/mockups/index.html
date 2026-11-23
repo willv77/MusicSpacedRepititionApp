@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice App — Design Mockups</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .thumbs { display: flex; gap: 8px; }
+  .thumbs img { width: 33%; border-radius: 12px; border: 1px solid #e5e7eb; background: #f3f4f6; }
+  table.cmp { max-width: 1344px; margin: 0 auto 60px; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; font-size: 14px; width: calc(100% - 56px); }
+  table.cmp th, table.cmp td { padding: 10px 14px; border-bottom: 1px solid #eef0f3; text-align: left; vertical-align: top; }
+  table.cmp th { background: #f8fafc; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: #475569; }
+  h2.section { max-width: 1344px; margin: 0 auto 12px; padding: 0 28px; font-size: 20px; }
+</style>
+</head>
+<body>
+<header class="gallery-header">
+  <h1>Practice App — Design Mockups</h1>
+  <p>Four visual and interaction directions for a spaced-repetition music practice app that runs as an iPhone Home Screen web app.
+     All options use the same data and scheduling rules: practice daily until a task has 5 sessions rated 8+, then the gap between practices grows.
+     Each option shows three screens at iPhone 15 size (390×844). See <code>../DESIGN.md</code> for the technical design.</p>
+  <nav class="gallery-nav">
+    <a class="active" href="index.html">All options</a>
+    <a href="option-a-native-list.html">A · Native List</a>
+    <a href="option-b-practice-mode.html">B · Practice Mode</a>
+    <a href="option-c-dashboard.html">C · Dashboard</a>
+    <a href="option-d-minimal.html">D · Minimal</a>
+  </nav>
+</header>
+
+<section class="option-grid">
+  <article class="option-card">
+    <span class="tag">Recommended base</span>
+    <h2>A · Native iOS List</h2>
+    <div class="swatches"><span style="background:#f2f2f7"></span><span style="background:#fff"></span><span style="background:#007aff"></span><span style="background:#34c759"></span><span style="background:#ff3b30"></span></div>
+    <div class="thumbs"><img src="screenshots/A1-today.png" alt="Today"><img src="screenshots/A2-log-session.png" alt="Log session"><img src="screenshots/A3-new-task.png" alt="New task"></div>
+    <p>Tab bar (Today · Tasks · History · Settings) with grouped lists and bottom sheets, so it feels like a built-in iPhone app.</p>
+    <ul>
+      <li>+ Familiar and accessible; supports light and dark mode</li>
+      <li>+ History sits right inside the Log sheet</li>
+      <li>− Plain look; the music-specific parts are minimal</li>
+    </ul>
+    <a class="open" href="option-a-native-list.html">Open option A →</a>
+  </article>
+
+  <article class="option-card">
+    <span class="tag" style="background:#ede9fe;color:#5b21b6">Best v2 add-on</span>
+    <h2>B · Practice Mode</h2>
+    <div class="swatches"><span style="background:#0f1014"></span><span style="background:#1a1b21"></span><span style="background:#8b7cff"></span><span style="background:#3ddc84"></span><span style="background:#ffb547"></span></div>
+    <div class="thumbs"><img src="screenshots/B1-today.png" alt="Today"><img src="screenshots/B2-focus-metronome.png" alt="Focus + metronome"><img src="screenshots/B3-rate.png" alt="Rate"></div>
+    <p>A dark, guided session: Start → practice one task with a built-in metronome → rate it → next task.</p>
+    <ul>
+      <li>+ Fastest logging (tempo comes from the metronome)</li>
+      <li>+ Most motivating; supports interleaved practice</li>
+      <li>− More to build (Web Audio metronome, timer)</li>
+    </ul>
+    <a class="open" href="option-b-practice-mode.html">Open option B →</a>
+  </article>
+
+  <article class="option-card">
+    <h2>C · Calendar Dashboard</h2>
+    <div class="swatches"><span style="background:#f6f7fb"></span><span style="background:#4f46e5"></span><span style="background:#10b981"></span><span style="background:#f59e0b"></span><span style="background:#ef4444"></span></div>
+    <div class="thumbs"><img src="screenshots/C1-dashboard.png" alt="Dashboard"><img src="screenshots/C2-task-detail.png" alt="Task detail"><img src="screenshots/C3-log-sheet.png" alt="Log sheet"></div>
+    <p>A week strip with due counts, quick stats, cards with tempo sparklines, and a task detail page with charts.</p>
+    <ul>
+      <li>+ Best view of progress and upcoming workload</li>
+      <li>+ The detail page is a good fit for any option</li>
+      <li>− Busier screens; most charting work</li>
+    </ul>
+    <a class="open" href="option-c-dashboard.html">Open option C →</a>
+  </article>
+
+  <article class="option-card">
+    <span class="tag" style="background:#ffedd5;color:#9a3412">Fastest to build</span>
+    <h2>D · Minimal Journal</h2>
+    <div class="swatches"><span style="background:#fbfaf7"></span><span style="background:#1c1917"></span><span style="background:#ea580c"></span><span style="background:#15803d"></span><span style="background:#e7e5e4"></span></div>
+    <div class="thumbs"><img src="screenshots/D1-journal.png" alt="Journal"><img src="screenshots/D2-expanded-row.png" alt="Expanded row"><img src="screenshots/D3-settings.png" alt="Settings"></div>
+    <p>One scrolling page; rows expand in place to show history and a three-field log form. Calm notebook look.</p>
+    <ul>
+      <li>+ Least code, no navigation, very quick to use</li>
+      <li>+ D3 settings/backup screen applies to every option</li>
+      <li>− Gets long with many tasks; few visuals</li>
+    </ul>
+    <a class="open" href="option-d-minimal.html">Open option D →</a>
+  </article>
+</section>
+
+<h2 class="section">Side-by-side</h2>
+<table class="cmp">
+  <tr><th></th><th>A · Native List</th><th>B · Practice Mode</th><th>C · Dashboard</th><th>D · Minimal</th></tr>
+  <tr><td><b>Taps to log</b> (tempo prefilled)</td><td>3 (open → rate → save)</td><td>2 (rate → save &amp; next)</td><td>3</td><td>3</td></tr>
+  <tr><td><b>History while logging</b></td><td>Chart + last 3 rows</td><td>8-session chart</td><td>Last 4 as chips (full charts on detail)</td><td>Table + sparkline</td></tr>
+  <tr><td><b>Navigation</b></td><td>Tab bar + sheets</td><td>Linear flow + icons</td><td>Floating tab bar + detail pages</td><td>Single page</td></tr>
+  <tr><td><b>Theme</b></td><td>iOS system light/dark</td><td>Dark</td><td>Light, colorful</td><td>Warm paper, light</td></tr>
+  <tr><td><b>Build effort (MVP)</b></td><td>Medium</td><td>High (metronome)</td><td>Medium-High (charts)</td><td>Low</td></tr>
+  <tr><td><b>Best for</b></td><td>Everyday use, familiar</td><td>Focused sessions on a music stand</td><td>Data lovers, planning</td><td>Quick MVP, minimalism</td></tr>
+</table>
+</body>
+</html>

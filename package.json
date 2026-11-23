@@ -1,0 +1,29 @@
+{
+  "name": "wkv-practice-app",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Spaced-repetition music practice app (iPhone Home Screen web app, hosted on GitHub Pages from docs/).",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@preact/signals": "^2.11.4",
+    "preact": "^11.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.13",
+    "@preact/preset-vite": "^2.10.6",
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vite-plugin-pwa": "^2.0.0",
+    "vitest": "^5.1.1",
+    "workbox-window": "^7.4.1"
+  }
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option D — Minimal Journal · Practice App Mockups</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .d { background: #fbfaf7; color: #1c1917; font-size: 16px; }
+  .d .serif { font-family: ui-serif, "New York", Georgia, "Times New Roman", serif; }
+  .d .mono { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
+  .d-head { display: flex; justify-content: space-between; align-items: flex-end; padding: 8px 22px 0; }
+  .d-head h2 { margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -.01em; }
+  .d-head small { display: block; font-size: 14px; color: #78716c; margin-top: 2px; }
+  .d-gear { font-size: 22px; color: #78716c; }
+  .d-add { margin: 14px 22px 4px; border: 1.5px dashed #d6d3d1; border-radius: 12px; padding: 12px 14px; color: #a8a29e; font-size: 16px; }
+  .d-add b { color: #ea580c; font-weight: 700; margin-right: 6px; }
+  .d-sec { font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #a8a29e; padding: 18px 22px 6px; font-weight: 600; }
+  .d-row { padding: 11px 22px; border-top: 1px solid #eeebe6; display: grid; grid-template-columns: 16px 1fr auto; column-gap: 10px; row-gap: 3px; align-items: baseline; }
+  .d-row:last-of-type { border-bottom: 1px solid #eeebe6; }
+  .d-bullet { font-size: 12px; color: #1c1917; }
+  .d-bullet.late { color: #ea580c; }
+  .d-bullet.later { color: #d6d3d1; }
+  .d-title { font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .d-when { font-size: 12px; color: #78716c; }
+  .d-when.late { color: #ea580c; font-weight: 700; }
+  .d-meta { grid-column: 2 / 4; font-size: 12px; color: #78716c; }
+  .d-meta .g { color: #15803d; }
+  .d-row.done .d-title { color: #a8a29e; text-decoration: line-through; }
+  .d-row.later .d-title { color: #57534e; }
+  .d-foot { padding: 16px 22px; font-size: 13px; color: #a8a29e; display: flex; gap: 14px; }
+  .d-foot span:first-child, .d-foot span:nth-child(2) { color: #ea580c; font-weight: 600; }
+
+  /* Expanded */
+  .d-open { background: #fff; border-top: 1px solid #eeebe6; border-bottom: 1px solid #eeebe6; padding: 12px 22px 14px; box-shadow: 0 6px 20px rgba(28,25,23,.06); position: relative; }
+  .d-open::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #ea580c; }
+  .d-open .t { font-size: 17px; font-weight: 700; display: flex; justify-content: space-between; align-items: baseline; }
+  .d-open .t span { font-size: 12px; color: #78716c; font-weight: 500; }
+  .d-hist { margin-top: 10px; font-size: 13px; width: 100%; border-collapse: collapse; }
+  .d-hist th { text-align: right; font-weight: 500; color: #a8a29e; font-size: 11px; padding: 0 0 4px; }
+  .d-hist th:first-child, .d-hist td:first-child { text-align: left; }
+  .d-hist td { text-align: right; padding: 3px 0; border-top: 1px dotted #e7e5e4; }
+  .d-hist td.g { color: #15803d; font-weight: 700; }
+  .d-spark { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 12px; color: #78716c; }
+  .d-spark svg { width: 150px; height: 22px; }
+  .d-form { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .d-in { border: 1.5px solid #d6d3d1; border-radius: 10px; padding: 6px 10px; }
+  .d-in small { display: block; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #a8a29e; font-weight: 600; }
+  .d-in b { font-size: 22px; font-weight: 600; }
+  .d-in.focus { border-color: #ea580c; box-shadow: 0 0 0 3px rgba(234,88,12,.12); }
+  .d-in.empty b { color: #d6d3d1; }
+  .d-dots { display: flex; justify-content: space-between; margin-top: 10px; }
+  .d-dots span { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #d6d3d1; display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 600; color: #57534e; }
+  .d-dots span.g { border-color: #86efac; color: #15803d; }
+  .d-rec { margin-top: 10px; font-size: 12.5px; color: #78716c; }
+  .d-rec b { color: #ea580c; }
+  .d-actions { display: flex; gap: 10px; margin-top: 12px; }
+  .d-actions span { flex: 1; text-align: center; padding: 11px; border-radius: 10px; font-weight: 700; font-size: 15px; }
+  .d-actions .go { background: #1c1917; color: #fff; }
+  .d-actions .no { background: #f5f5f4; color: #57534e; flex: 0 0 90px; }
+
+  /* Settings */
+  .d-back { padding: 6px 22px 0; color: #ea580c; font-size: 16px; }
+  .d-group { margin: 0 22px; border: 1px solid #eeebe6; border-radius: 14px; background: #fff; overflow: hidden; }
+  .d-item { display: flex; justify-content: space-between; align-items: center; padding: 11px 14px; border-top: 1px solid #f2f0ec; font-size: 15px; }
+  .d-item:first-child { border-top: 0; }
+  .d-item span:last-child { color: #78716c; }
+  .d-item .val { font-weight: 600; color: #1c1917; }
+  .d-item.btn { color: #ea580c; font-weight: 600; }
+  .toggle { width: 44px; height: 26px; border-radius: 13px; background: #15803d; position: relative; }
+  .toggle::after { content: ""; position: absolute; right: 2px; top: 2px; width: 22px; height: 22px; border-radius: 50%; background: #fff; }
+  .d-warn { margin: 0 22px 10px; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 1.4; }
+</style>
+</head>
+<body>
+<header class="gallery-header">
+  <h1>Option D — Minimal Journal</h1>
+  <p>A single scrolling page with no tabs and no modals: rows expand in place to show history and a three-field log form. Calm "paper notebook" look
+     (serif headings, monospaced numbers, one accent color). Simplest to build and maintain, and works well with one hand.</p>
+  <nav class="gallery-nav">
+    <a href="index.html">All options</a>
+    <a href="option-a-native-list.html">A · Native List</a>
+    <a href="option-b-practice-mode.html">B · Practice Mode</a>
+    <a href="option-c-dashboard.html">C · Dashboard</a>
+    <a class="active" href="option-d-minimal.html">D · Minimal</a>
+  </nav>
+</header>
+
+<main class="phones">
+
+  <!-- D1: list -->
+  <section class="phone-wrap">
+    <div class="phone"><div class="screen d">
+      <div class="d-head"><div><h2 class="serif">Practice Journal</h2><small>Mon, Nov 23 · 4 due</small></div><span class="d-gear">⚙︎</span></div>
+      <div class="d-add"><b>+</b>Add a task…</div>
+
+      <div class="d-sec">Due · 4</div>
+      <div class="d-row"><span class="d-bullet late">●</span><span class="d-title">Bach Minuet in G — mm. 1–8</span><span class="d-when late mono">2d late</span><span class="d-meta mono">72 bpm · 6 · 8+ 1/5</span></div>
+      <div class="d-row"><span class="d-bullet">○</span><span class="d-title">G major scale — 2 octaves, HT</span><span class="d-when mono">today</span><span class="d-meta mono">96 bpm · <span class="g">8</span> · 8+ 3/5</span></div>
+      <div class="d-row"><span class="d-bullet">○</span><span class="d-title">Chromatic exercise 1-2-3-4</span><span class="d-when mono">today</span><span class="d-meta mono">112 bpm · <span class="g">9</span> · graduated · 4d</span></div>
+      <div class="d-row"><span class="d-bullet">○</span><span class="d-title">Chord changes G – C – D</span><span class="d-when mono">today</span><span class="d-meta mono">80 bpm · 7 · 8+ 2/5</span></div>
+
+      <div class="d-sec">Done today · 1</div>
+      <div class="d-row done"><span class="d-bullet">✓</span><span class="d-title">Sight-read 1 new page</span><span class="d-when mono">→ wed</span><span class="d-meta mono">— bpm · <span class="g">9</span> · 2d</span></div>
+
+      <div class="d-sec">Later · 3</div>
+      <div class="d-row later"><span class="d-bullet later">○</span><span class="d-title">Für Elise — B section</span><span class="d-when mono">tue</span></div>
+      <div class="d-row later"><span class="d-bullet later">○</span><span class="d-title">Ear training: intervals</span><span class="d-when mono">thu</span></div>
+      <div class="d-row later"><span class="d-bullet later">○</span><span class="d-title">Arpeggios — C, G, D major</span><span class="d-when mono">dec 1</span></div>
+
+      <div class="d-foot"><span>Export</span><span>Import</span><span>8 tasks · 148 sessions</span></div>
+    </div></div>
+    <div class="phone-caption">D1 · Journal (everything on one page)
+      <small>Add a task inline at the top. Each row shows last tempo, last difficulty and mastery progress ("8+ 3/5"). Tap a row to expand it.</small></div>
+  </section>
+
+  <!-- D2: expanded row -->
+  <section class="phone-wrap">
+    <div class="phone"><div class="screen d">
+      <div class="d-head"><div><h2 class="serif">Practice Journal</h2><small>Mon, Nov 23 · 4 due</small></div><span class="d-gear">⚙︎</span></div>
+      <div class="d-sec">Due · 4</div>
+      <div class="d-row"><span class="d-bullet late">●</span><span class="d-title">Bach Minuet in G — mm. 1–8</span><span class="d-when late mono">2d late</span><span class="d-meta mono">72 bpm · 6 · 8+ 1/5</span></div>
+
+      <div class="d-open">
+        <div class="t">G major scale — 2 octaves, HT <span class="mono">8+ 3/5</span></div>
+        <table class="d-hist mono">
+          <tr><th>date</th><th>bpm</th><th>diff</th><th>next</th></tr>
+          <tr><td>sun 11/22</td><td>96</td><td class="g">8</td><td>1d</td></tr>
+          <tr><td>sat 11/21</td><td>92</td><td class="g">9</td><td>1d</td></tr>
+          <tr><td>fri 11/20</td><td>92</td><td>7</td><td>1d</td></tr>
+          <tr><td>thu 11/19</td><td>88</td><td class="g">8</td><td>1d</td></tr>
+        </table>
+        <div class="d-spark"><span class="mono">tempo 80 → 96</span>
+          <svg viewBox="0 0 150 22"><polyline points="2,19 26,15 50,15 74,11 98,7 122,7 148,3" fill="none" stroke="#ea580c" stroke-width="2" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="d-form">
+          <div class="d-in"><small>Tempo</small><b class="mono">100</b></div>
+          <div class="d-in focus empty"><small>Diff 1–10</small><b class="mono">—</b></div>
+          <div class="d-in"><small>Days</small><b class="mono">1</b></div>
+        </div>
+        <div class="d-dots mono"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span class="g">8</span><span class="g">9</span><span class="g">10</span></div>
+        <div class="d-rec">Recommended <b>1 day</b>: 3 of 5 sessions at 8+ so far.</div>
+        <div class="d-actions"><span class="no">Cancel</span><span class="go">Log session</span></div>
+      </div>
+
+      <div class="d-row"><span class="d-bullet">○</span><span class="d-title">Chromatic exercise 1-2-3-4</span><span class="d-when mono">today</span><span class="d-meta mono">112 bpm · <span class="g">9</span> · graduated · 4d</span></div>
+      <div class="d-row"><span class="d-bullet">○</span><span class="d-title">Chord changes G – C – D</span><span class="d-when mono">today</span><span class="d-meta mono">80 bpm · 7 · 8+ 2/5</span></div>
+    </div></div>
+    <div class="phone-caption">D2 · Row expanded = log form
+      <small>History table and tempo sparkline sit directly above three fields: Tempo (prefilled), Difficulty (tap a number) and Days (prefilled with the recommendation).</small></div>
+  </section>
+
+  <!-- D3: Settings & backup -->
+  <section class="phone-wrap">
+    <div class="phone"><div class="screen d">
+      <div class="d-back">‹ Journal</div>
+      <div class="d-head" style="padding-top:2px"><h2 class="serif">Settings</h2></div>
+
+      <div class="d-sec">Backup</div>
+      <div class="d-warn">Your data is stored <b>only on this iPhone</b>, inside the Home Screen app. Deleting the app deletes your data, so export a backup regularly.</div>
+      <div class="d-group">
+        <div class="d-item"><span>Last backup</span><span style="color:#ea580c;font-weight:600">9 days ago</span></div>
+        <div class="d-item btn"><span>Export backup (.json)…</span><span>⤴</span></div>
+        <div class="d-item btn"><span>Import backup…</span><span>⤵</span></div>
+      </div>
+
+      <div class="d-sec">Scheduling</div>
+      <div class="d-group">
+        <div class="d-item"><span>"Strong" rating is at least</span><span class="val">8</span></div>
+        <div class="d-item"><span>Strong sessions to graduate</span><span class="val">5</span></div>
+        <div class="d-item"><span>Only count 1 session per day</span><span class="toggle"></span></div>
+        <div class="d-item"><span>Growth after graduating</span><span class="val">×1.5 / ×2 / ×2.5</span></div>
+        <div class="d-item"><span>Reset to daily if rated ≤</span><span class="val">5</span></div>
+        <div class="d-item"><span>Maximum interval</span><span class="val">60 days</span></div>
+      </div>
+
+      <div class="d-sec">About</div>
+      <div class="d-group">
+        <div class="d-item"><span>Version</span><span class="mono">0.1.0 · 2026-11-23</span></div>
+        <div class="d-item btn"><span>Check for update</span><span>↻</span></div>
+      </div>
+    </div></div>
+    <div class="phone-caption">D3 · Settings &amp; backup (applies to every option)
+      <small>Backup reminder, export/import, and tunable scheduling rules. The defaults match your rule: practice daily until 5 sessions are rated 8+.</small></div>
+  </section>
+
+</main>
+<script src="shared.js"></script>
+</body>
+</html>

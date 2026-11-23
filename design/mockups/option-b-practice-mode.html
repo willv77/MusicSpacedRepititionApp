@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option B — Practice Mode · Practice App Mockups</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .b { background: #0f1014; color: #f4f4f6; font-size: 16px; }
+  .b-pad { padding: 0 20px; }
+  .b-topbar { display: flex; justify-content: space-between; align-items: center; height: 44px; padding: 0 20px; }
+  .b-brand { font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 8px; }
+  .b-brand i { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg,#8b7cff,#5b8cff); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: 15px; }
+  .b-icons { display: flex; gap: 16px; color: #9a9ca6; }
+  .b-icons svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .b-muted { color: #9a9ca6; }
+  .b-hero { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 6px; }
+  .b-hero h2 { margin: 2px 0 0; font-size: 30px; line-height: 1.1; letter-spacing: -.01em; }
+  .b-hero .date { font-size: 14px; color: #9a9ca6; }
+  .b-hero .eta { margin-top: 8px; font-size: 14px; color: #c9c9d1; }
+  .ring { position: relative; width: 116px; height: 116px; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring .lbl { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ring .lbl b { font-size: 26px; } .ring .lbl span { font-size: 12px; color: #9a9ca6; }
+  .b-label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #8b8d97; padding: 16px 20px 8px; display: flex; justify-content: space-between; }
+  .b-label .act { text-transform: none; letter-spacing: 0; color: #a99dff; font-size: 13px; }
+  .b-queue { margin: 0 16px; display: flex; flex-direction: column; gap: 8px; }
+  .b-qitem { background: #1a1b21; border: 1px solid #26282f; border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; }
+  .b-num { width: 28px; height: 28px; border-radius: 50%; background: #26282f; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #c9c9d1; flex: 0 0 28px; }
+  .b-num.done { background: #1f3b2b; color: #3ddc84; }
+  .b-qmain { flex: 1; min-width: 0; }
+  .b-qtitle { font-size: 15.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .b-qmeta { font-size: 12.5px; color: #9a9ca6; margin-top: 3px; }
+  .b-qitem.done .b-qtitle { color: #8b8d97; text-decoration: line-through; text-decoration-color: #555; }
+  .chip { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: #26282f; color: #c9c9d1; white-space: nowrap; }
+  .chip.amber { background: #3a2c12; color: #ffb547; }
+  .chip.violet { background: #2a2550; color: #b3a8ff; }
+  .chip.green { background: #183526; color: #3ddc84; }
+  .b-cta { position: absolute; left: 16px; right: 16px; bottom: 34px; display: flex; flex-direction: column; gap: 10px; }
+  .b-btn { text-align: center; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 17px; }
+  .b-btn.primary { background: linear-gradient(135deg,#8b7cff,#6a5cff); color: #fff; box-shadow: 0 8px 24px rgba(124,108,255,.35); }
+  .b-btn.light { background: #f4f4f6; color: #0f1014; }
+  .b-btn.ghost { background: transparent; color: #a99dff; padding: 6px; font-size: 15px; font-weight: 600; }
+
+  /* Focus */
+  .b-progress { display: flex; align-items: center; gap: 12px; padding: 0 20px; height: 44px; }
+  .b-progress .x { font-size: 22px; color: #9a9ca6; }
+  .b-segs { flex: 1; display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; }
+  .b-segs i { height: 4px; border-radius: 2px; background: #2a2c34; }
+  .b-segs i.on { background: #3ddc84; } .b-segs i.cur { background: #8b7cff; }
+  .b-progress .n { font-size: 13px; color: #9a9ca6; font-variant-numeric: tabular-nums; }
+  .b-card { margin: 10px 16px 0; background: #1a1b21; border: 1px solid #26282f; border-radius: 20px; padding: 16px 18px; }
+  .b-card .kicker { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #8b8d97; text-transform: uppercase; letter-spacing: .08em; }
+  .b-card h3 { margin: 8px 0 6px; font-size: 24px; line-height: 1.2; }
+  .b-card .last { font-size: 14px; color: #c9c9d1; }
+  .b-card .last b { color: #fff; }
+  .pips { display: inline-flex; gap: 4px; vertical-align: middle; }
+  .pips i { width: 7px; height: 7px; border-radius: 50%; background: #3a3c45; }
+  .pips i.on { background: #3ddc84; }
+  .b-mastery { margin-top: 10px; font-size: 13px; color: #9a9ca6; display: flex; gap: 8px; align-items: center; }
+  .metro { margin: 14px 16px 0; background: radial-gradient(120% 90% at 50% 0%, #22213a 0%, #15161b 70%); border: 1px solid #26282f; border-radius: 24px; padding: 18px 18px 20px; text-align: center; }
+  .metro .bpmrow { display: flex; align-items: center; justify-content: space-between; }
+  .round { width: 52px; height: 52px; border-radius: 50%; background: #26282f; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #e4e4ea; }
+  .metro .bpm { font-size: 76px; font-weight: 800; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .metro .bpm small { display: block; font-size: 13px; font-weight: 600; letter-spacing: .12em; color: #8b8d97; margin-top: 4px; }
+  .beats { display: flex; justify-content: center; gap: 14px; margin: 16px 0 14px; }
+  .beats i { width: 14px; height: 14px; border-radius: 50%; background: #2f3140; }
+  .beats i.accent { width: 18px; height: 18px; margin-top: -2px; }
+  .beats i.lit { background: #8b7cff; box-shadow: 0 0 16px #8b7cff; }
+  .slider { height: 6px; background: #2a2c34; border-radius: 3px; position: relative; margin: 0 4px; }
+  .slider i { position: absolute; left: 0; top: 0; bottom: 0; width: 48%; background: #8b7cff; border-radius: 3px; }
+  .slider b { position: absolute; left: 48%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; background: #fff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,.4); }
+  .metro .controls { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; }
+  .pill { background: #26282f; color: #c9c9d1; font-size: 13px; font-weight: 600; padding: 9px 14px; border-radius: 999px; }
+  .play { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,#8b7cff,#6a5cff); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(124,108,255,.45); }
+  .play i { width: 22px; height: 24px; display: flex; gap: 6px; } .play i::before, .play i::after { content: ""; width: 8px; background: #fff; border-radius: 2px; }
+  .b-sugg { margin-top: 12px; font-size: 13px; color: #b3a8ff; }
+  .b-timer { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; color: #ffb547; font-weight: 700; font-size: 13px; letter-spacing: 0; text-transform: none; }
+  .b-timer::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #ff5a4f; }
+
+  /* Rate */
+  .b-rate-h { padding: 6px 20px 0; }
+  .b-rate-h h2 { margin: 0; font-size: 26px; }
+  .b-rate-h div { font-size: 14px; color: #9a9ca6; margin-top: 3px; }
+  .b-chart { margin: 12px 16px 0; background: #1a1b21; border: 1px solid #26282f; border-radius: 16px; padding: 10px 10px 6px; }
+  .b-chart .hdr { display: flex; justify-content: space-between; font-size: 12px; color: #8b8d97; padding: 0 4px 2px; }
+  .b-chart .hdr b { color: #b3a8ff; font-weight: 600; }
+  .b-chart .hdr b.g { color: #3ddc84; }
+  .b-chart svg { display: block; width: 100%; height: 128px; }
+  .b-grid { margin: 12px 16px 0; display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+  .b-grid span { height: 46px; border-radius: 12px; background: #1a1b21; border: 1px solid #26282f; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 700; color: #c9c9d1; }
+  .b-grid span.hi { border-color: #1f4d33; color: #3ddc84; }
+  .b-grid span.sel { background: #3ddc84; color: #0f1014; border-color: #3ddc84; box-shadow: 0 6px 18px rgba(61,220,132,.35); }
+  .b-anchor { text-align: center; font-size: 13px; color: #9a9ca6; margin-top: 8px; }
+  .b-anchor b { color: #3ddc84; }
+  .b-row { margin: 12px 16px 0; display: flex; justify-content: space-between; align-items: center; background: #1a1b21; border: 1px solid #26282f; border-radius: 14px; padding: 11px 14px; font-size: 15px; }
+  .b-row b { font-size: 17px; }
+  .b-row .edit { color: #a99dff; font-size: 14px; font-weight: 600; }
+  .b-celebrate { margin: 10px 16px 0; background: linear-gradient(135deg,#183526,#1a2b3a); border: 1px solid #23573a; border-radius: 14px; padding: 10px 14px; font-size: 13.5px; line-height: 1.4; color: #c8f5da; }
+  .b-celebrate b { color: #3ddc84; }
+  .b-chips { margin: 8px 16px 0; display: flex; gap: 7px; }
+  .b-chips span { flex: 1; text-align: center; padding: 10px 0; border-radius: 12px; background: #1a1b21; border: 1px solid #26282f; font-weight: 700; font-size: 15px; color: #c9c9d1; position: relative; }
+  .b-chips span.sel { background: #2a2550; border-color: #8b7cff; color: #fff; }
+  .b-chips span.sel::after { content: "★"; position: absolute; top: -8px; right: -4px; font-size: 11px; background: #ffb547; color: #0f1014; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .b-next { display: flex; justify-content: space-between; margin: 12px 20px 0; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #8b8d97; }
+  .b-next span:last-child { text-transform: none; letter-spacing: 0; color: #c9c9d1; font-size: 13px; }
+</style>
+</head>
+<body>
+<header class="gallery-header">
+  <h1>Option B — Practice Mode (focus flow)</h1>
+  <p>A dark "studio" look built around a guided session: tap <b>Start</b>, practice one task at a time with a built-in metronome, rate it, and move to the next.
+     The metronome's tempo is logged automatically, so logging takes about 2 taps. Best when you practice on a stand or in low light.</p>
+  <nav class="gallery-nav">
+    <a href="index.html">All options</a>
+    <a href="option-a-native-list.html">A · Native List</a>
+    <a class="active" href="option-b-practice-mode.html">B · Practice Mode</a>
+    <a href="option-c-dashboard.html">C · Dashboard</a>
+    <a href="option-d-minimal.html">D · Minimal</a>
+  </nav>
+</header>
+
+<main class="phones">
+
+  <!-- B1: Today / start -->
+  <section class="phone-wrap">
+    <div class="phone"><div class="screen b">
+      <div class="b-topbar">
+        <span class="b-brand"><i>♪</i>Practice</span>
+        <span class="b-icons">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+        </span>
+      </div>
+      <div class="b-hero">
+        <div>
+          <div class="date">Monday, Nov 23</div>
+          <h2>4 tasks<br>to practice</h2>
+          <div class="eta">≈ 20 min · 🔥 12-day streak</div>
+        </div>
+        <div class="ring">
+          <svg width="116" height="116" viewBox="0 0 116 116"><circle cx="58" cy="58" r="50" stroke="#26282f" stroke-width="10" fill="none"/><circle cx="58" cy="58" r="50" stroke="#3ddc84" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="62.8 314.2"/></svg>
+          <div class="lbl"><b>1/5</b><span>done</span></div>
+        </div>
+      </div>
+
+      <div class="b-label"><span>Up next</span><span class="act">Overdue first · ⤮ Shuffle</span></div>
+      <div class="b-queue">
+        <div class="b-qitem"><span class="b-num">1</span><div class="b-qmain"><div class="b-qtitle">Bach Minuet in G — mm. 1–8</div><div class="b-qmeta">72 BPM · 6/10 · <span class="pips"><i class="on"></i><i></i><i></i><i></i><i></i></span></div></div><span class="chip amber">2d late</span></div>
+        <div class="b-qitem"><span class="b-num">2</span><div class="b-qmain"><div class="b-qtitle">Chromatic exercise 1-2-3-4</div><div class="b-qmeta">108 BPM · 8/10 · <span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div></div><span class="chip violet">Due</span></div>
+        <div class="b-qitem"><span class="b-num">3</span><div class="b-qmain"><div class="b-qtitle">G major scale — 2 octaves, HT</div><div class="b-qmeta">96 BPM · 8/10 · <span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></div></div><span class="chip violet">Due</span></div>
+        <div class="b-qitem"><span class="b-num">4</span><div class="b-qmain"><div class="b-qtitle">Chord changes G – C – D</div><div class="b-qmeta">80 BPM · 7/10 · <span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></div></div><span class="chip violet">Due</span></div>
+        <div class="b-qitem done"><span class="b-num done">✓</span><div class="b-qmain"><div class="b-qtitle">Sight-read 1 new page</div><div class="b-qmeta">9/10 · next Wed</div></div><span class="chip green">Done</span></div>
+      </div>
+
+      <div class="b-cta">
+        <div class="b-btn primary">▶&nbsp; Start practice</div>
+        <div class="b-btn ghost">Practice ahead (2 due tomorrow)</div>
+      </div>
+    </div></div>
+    <div class="phone-caption">B1 · Today's session
+      <small>One big Start button. The queue puts overdue tasks first and can shuffle the rest to mix up practice (interleaving).</small></div>
+  </section>
+
+  <!-- B2: Focus card + metronome -->
+  <section class="phone-wrap">
+    <div class="phone"><div class="screen b">
+      <div class="b-progress"><span class="x">✕</span><div class="b-segs"><i class="on"></i><i class="on"></i><i class="cur"></i><i></i><i></i></div><span class="n">3 / 5</span></div>
+      <div class="b-card">
+        <div class="kicker"><span>Task</span><span class="b-timer">04:12</span></div>
+        <h3>Chromatic exercise 1-2-3-4</h3>
+        <div class="last">Last: <b>108 BPM</b> · 8/10 · yesterday</div>
+        <div class="b-mastery"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>4 of 5 sessions at 8+ · one more to graduate</div>
+      </div>
+
+      <div class="metro">
+        <div class="bpmrow">
+          <span class="round">−</span>
+          <div class="bpm">112<small>BPM · ALLEGRO</small></div>
+          <span class="round">+</span>
+        </div>
+        <div class="beats"><i class="accent"></i><i class="lit"></i><i></i><i></i></div>
+        <div class="slider"><i></i><b></b></div>
+        <div class="controls">
+          <span class="pill">Tap</span>
+          <span class="pill">4/4</span>
+          <span class="play"><i></i></span>
+          <span class="pill">Click</span>
+          <span class="pill">−5%</span>
+        </div>
+        <div class="b-sugg">Suggested 112 BPM (+4 from last, rated 8+)</div>
+      </div>
+
+      <div class="b-cta">
+        <div class="b-btn light">Done — rate it  →</div>
+        <div class="b-btn ghost">Skip for today</div>
+      </div>
+    </div></div>
+    <div class="phone-caption">B2 · Focus card + metronome
+      <small>Last tempo and rating are shown above the metronome. The tempo starts at a suggested value, and whatever tempo you finish on is the one that gets logged.</small></div>
+  </section>
+
+  <!-- B3: Rate + schedule -->
+  <section class="phone-wrap">
+    <div class="phone"><div class="screen b">
+      <div class="b-progress"><span class="x">‹</span><div class="b-segs"><i class="on"></i><i class="on"></i><i class="cur"></i><i></i><i></i></div><span class="n">3 / 5</span></div>
+      <div class="b-rate-h"><h2>How did it go?</h2><div>Chromatic exercise 1-2-3-4</div></div>
+
+      <div class="b-chart">
+        <div class="hdr"><span>Last 7 sessions + today</span><span><b>— tempo</b> · <b class="g">▮ 8+</b></span></div>
+        <svg viewBox="0 0 326 128" preserveAspectRatio="none">
+          <line x1="0" x2="326" y1="80.8" y2="80.8" stroke="#3ddc84" stroke-dasharray="3 4" stroke-width="1" opacity=".5"/>
+          <g fill="#2f3140">
+            <rect x="12" y="89.6" width="20" height="26.4" rx="4"/>
+            <rect x="52" y="85.2" width="20" height="30.8" rx="4"/>
+            <rect x="92" y="80.8" width="20" height="35.2" rx="4" fill="#2f7a52"/>
+            <rect x="132" y="85.2" width="20" height="30.8" rx="4"/>
+            <rect x="172" y="80.8" width="20" height="35.2" rx="4" fill="#2f7a52"/>
+            <rect x="212" y="76.4" width="20" height="39.6" rx="4" fill="#2f7a52"/>
+            <rect x="252" y="80.8" width="20" height="35.2" rx="4" fill="#2f7a52"/>
+            <rect x="292" y="76.4" width="20" height="39.6" rx="4" fill="#3ddc84"/>
+          </g>
+          <g font-size="9" fill="#8b8d97" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif">
+            <text x="22" y="126">6</text><text x="62" y="126">7</text><text x="102" y="126">8</text><text x="142" y="126">7</text><text x="182" y="126">8</text><text x="222" y="126">9</text><text x="262" y="126">8</text><text x="302" y="126" fill="#3ddc84" font-weight="700">9</text>
+          </g>
+          <polyline points="22,56 62,48 102,40 142,40 182,32 222,24 262,24" fill="none" stroke="#8b7cff" stroke-width="2.5" stroke-linejoin="round"/>
+          <polyline points="262,24 302,16" fill="none" stroke="#8b7cff" stroke-width="2.5" stroke-dasharray="4 3"/>
+          <g fill="#0f1014" stroke="#8b7cff" stroke-width="2">
+            <circle cx="22" cy="56" r="3"/><circle cx="62" cy="48" r="3"/><circle cx="102" cy="40" r="3"/><circle cx="142" cy="40" r="3"/><circle cx="182" cy="32" r="3"/><circle cx="222" cy="24" r="3"/><circle cx="262" cy="24" r="3"/>
+          </g>
+          <circle cx="302" cy="16" r="4.5" fill="#8b7cff"/>
+          <g font-size="9" fill="#b3a8ff" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif">
+            <text x="22" y="68">92</text><text x="262" y="14">108</text><text x="302" y="7" font-weight="700">112</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="b-grid">
+        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+        <span>6</span><span>7</span><span class="hi">8</span><span class="sel">9</span><span class="hi">10</span>
+      </div>
+      <div class="b-anchor"><b>9</b> · Clean at tempo, one or two small slips</div>
+
+      <div class="b-row"><span class="b-muted">Tempo</span><b>112 BPM <span class="b-muted" style="font-size:12px;font-weight:500">from metronome</span></b><span class="edit">Edit</span></div>
+
+      <div class="b-celebrate">🎉 <b>5th session at 8+.</b> This task has graduated, so the gaps between practices will now grow.</div>
+
+      <div class="b-next"><span>Next practice</span><span>→ Wed, Nov 25</span></div>
+      <div class="b-chips"><span>1d</span><span class="sel">2d</span><span>3d</span><span>5d</span><span>7d</span><span>…</span></div>
+
+      <div class="b-cta"><div class="b-btn primary">Save &amp; next task  →</div></div>
+    </div></div>
+    <div class="phone-caption">B3 · Rate &amp; schedule
+      <small>Big 1–10 buttons with a short description of each rating. The chart shows the tempo trend and which sessions were 8+. The ★ chip is the recommended interval; here this session is the 5th at 8+, so the task graduates.</small></div>
+  </section>
+
+</main>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+node_modules/
+*.log
+.DS_Store
+coverage/
+.vite/
+# NOTE: docs/ is the GitHub Pages build output and MUST be committed.
