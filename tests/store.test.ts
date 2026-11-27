@@ -14,28 +14,7 @@ import {
   updateScheduler,
   updateSession,
 } from '../src/data/store';
-
-class MemoryStorage implements Storage {
-  private map = new Map<string, string>();
-  get length() {
-    return this.map.size;
-  }
-  clear() {
-    this.map.clear();
-  }
-  getItem(key: string) {
-    return this.map.get(key) ?? null;
-  }
-  key(i: number) {
-    return [...this.map.keys()][i] ?? null;
-  }
-  removeItem(key: string) {
-    this.map.delete(key);
-  }
-  setItem(key: string, value: string) {
-    this.map.set(key, String(value));
-  }
-}
+import { MemoryStorage } from './support/memoryStorage';
 
 let storage: MemoryStorage;
 
@@ -104,6 +83,14 @@ describe('store', () => {
   it('keeps max interval ≥ min interval', () => {
     updateScheduler({ minGraduatedDays: 10, maxIntervalDays: 5 });
     expect(data.value.settings.scheduler).toMatchObject({ minGraduatedDays: 10, maxIntervalDays: 10 });
+  });
+
+  it('stores non-ASCII text as ASCII and restores it exactly', () => {
+    const text = 'Für Elise — “B” section ♯ 🎵';
+    addTask(text);
+    const raw = storage.getItem(DATA_KEY) ?? '';
+    expect(/[^\x00-\x7f]/.test(raw)).toBe(false);
+    expect(new LocalStorageRepository(storage).load()?.tasks[0].description).toBe(text);
   });
 
   it('reports unreadable data without losing it', () => {

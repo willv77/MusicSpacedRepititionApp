@@ -1,3 +1,4 @@
+import { computed } from '@preact/signals';
 import { useEffect } from 'preact/hooks';
 import type { ThemeSetting } from './domain/types';
 import { testModeActive } from './data/clock';
@@ -5,16 +6,21 @@ import { applyUpdate, offlineReady, updateAvailable } from './data/pwa';
 import { settings } from './data/store';
 import { TestModeBanner } from './ui/components/Banners';
 import { TabBar } from './ui/components/controls';
-import { DialogHost, Toast, showToast } from './ui/feedback';
+import { DialogHost, Toast, dialogOpen, showToast } from './ui/feedback';
 import { route } from './ui/router';
 import { HistoryScreen } from './ui/screens/HistoryScreen';
 import { SettingsScreen } from './ui/screens/SettingsScreen';
 import { TaskDetailScreen } from './ui/screens/TaskDetailScreen';
 import { TasksScreen } from './ui/screens/TasksScreen';
 import { TodayScreen } from './ui/screens/TodayScreen';
+import { sheet } from './ui/sheetState';
 import { SheetHost } from './ui/sheets/Sheets';
 
 const darkQuery = typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+// Bound straight to the DOM so opening a sheet doesn't re-render the (possibly very long) screen behind it.
+const overlayOpen = computed(() => sheet.value != null || dialogOpen.value);
+const appClass = computed(() => `app${testModeActive.value ? ' has-banner' : ''}${overlayOpen.value ? ' covered' : ''}`);
 
 function applyTheme(theme: ThemeSetting): void {
   const root = document.documentElement;
@@ -54,18 +60,22 @@ export function App() {
 
   const tab = r.name === 'task' ? r.from : r.name;
 
+  // Overlays must stay outside .app: iOS WebKit can leave position:fixed children of an
+  // overflow:hidden ancestor unpainted once the screen behind them becomes scrollable.
   return (
-    <div class={`app${testModeActive.value ? ' has-banner' : ''}`}>
-      <TestModeBanner />
-      {r.name === 'today' && <TodayScreen />}
-      {r.name === 'tasks' && <TasksScreen />}
-      {r.name === 'history' && <HistoryScreen />}
-      {r.name === 'settings' && <SettingsScreen />}
-      {r.name === 'task' && <TaskDetailScreen key={r.id} id={r.id} from={r.from} />}
-      <TabBar active={tab} />
+    <>
+      <div class={appClass}>
+        <TestModeBanner />
+        {r.name === 'today' && <TodayScreen />}
+        {r.name === 'tasks' && <TasksScreen />}
+        {r.name === 'history' && <HistoryScreen />}
+        {r.name === 'settings' && <SettingsScreen />}
+        {r.name === 'task' && <TaskDetailScreen key={r.id} id={r.id} from={r.from} />}
+        <TabBar active={tab} />
+      </div>
       <SheetHost />
       <DialogHost />
       <Toast />
-    </div>
+    </>
   );
 }

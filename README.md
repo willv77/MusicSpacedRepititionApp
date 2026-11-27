@@ -13,12 +13,26 @@ Requires Node 20+.
 ```sh
 npm install
 npm run dev        # http://localhost:5173 with hot reload (service worker disabled in dev)
-npm test           # Vitest unit tests
+npm test           # Vitest unit + scale tests
+npm run test:e2e   # Playwright: every screen and popup on iPhone (WebKit) and Android (Chromium) emulation
 npm run build      # type-check + production build into docs/
 npm run preview    # serve the built docs/ at http://localhost:4173
 ```
 
 Source lives in `src/` (Vite root). `docs/` is **build output**: never edit it by hand, and always commit it after `npm run build`.
+
+### Scale tests
+
+Both suites run at 5, 10, 50, 100, 500, 1 000, 5 000 and 10 000 items, using three data shapes from [tests/support/scaleData.ts](tests/support/scaleData.ts):
+
+- many tasks with a year of history,
+- many sessions across up to 40 tasks over three years,
+- one task practiced for three years.
+
+- `tests/scale.test.ts` checks scheduling, the Today queue, store edits, saving within the iPhone's 5 MB storage quota, and backup import/merge, each with a time budget.
+- `e2e/scale.spec.ts` runs the production build as an installed Home Screen app. It opens every popup (New Task, Log Session, Edit Task, Edit Session, delete confirmation) and checks that each is on screen and tappable, over a locked background, and not nested in a clipping container. It also checks that the data survives a relaunch.
+
+The first e2e run needs the browsers: `npx playwright install webkit chromium`. The e2e build goes to `.e2e-dist/`, so `docs/` is never touched.
 
 ## Deploy to GitHub Pages
 

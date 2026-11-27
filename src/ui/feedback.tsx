@@ -1,4 +1,4 @@
-import { signal } from '@preact/signals';
+import { computed, signal } from '@preact/signals';
 import { useEffect } from 'preact/hooks';
 
 interface ToastAction {
@@ -62,6 +62,7 @@ interface DialogState {
 }
 
 const dialog = signal<DialogState | null>(null);
+export const dialogOpen = computed(() => dialog.value != null);
 
 /** iOS-style alert. Resolves with the chosen button's value, or null if dismissed. */
 export function ask(title: string, message: string | undefined, buttons: DialogButton[]): Promise<string | null> {

@@ -199,6 +199,11 @@ textarea {
   padding-top: 0;
 }
 
+/* Background behind an open sheet/dialog: no scrolling or touch bleed-through. */
+.app.covered .screen {
+  overflow: hidden;
+}
+
 /* ===== Test mode banner ===== */
 .test-banner {
   flex: 0 0 auto;
